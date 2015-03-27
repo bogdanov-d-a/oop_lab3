@@ -9,11 +9,11 @@ std::string DirectionToString(CCar::Direction dir)
 	switch (dir)
 	{
 	case CCar::Direction::FORWARD:
-		return "forward";
+		return "moving forward";
 	case CCar::Direction::STILL:
 		return "still";
 	case CCar::Direction::BACKWARD:
-		return "backward";
+		return "moving backward";
 	default:
 		assert(false);
 		return "undefined";
@@ -56,7 +56,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		if (userStr == "Info")
 		{
 			std::cout << "Engine is " << (car.EngineTurnedOn() ? "on" : "off") << "\n";
-			std::cout << "Car moves " << DirectionToString(car.GetDirection()) << "\n";
+			std::cout << "Car is " << DirectionToString(car.GetDirection()) << "\n";
 			std::cout << "Speed is " << car.GetSpeed() << "\n";
 			std::cout << "Gear is " << car.GetGear() << "\n";
 		}
