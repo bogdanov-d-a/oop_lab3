@@ -31,4 +31,19 @@ BOOST_AUTO_TEST_CASE(GearRangeCheckWorks)
 	BOOST_CHECK(car.SetGear(6) == CCar::SetGearResult::INCORRECT_GEAR);
 }
 
+BOOST_AUTO_TEST_CASE(CanSwitchOntoNeutralWhenOff)
+{
+	BOOST_CHECK(car.SetGear(0) == CCar::SetGearResult::SUCCESS);
+	BOOST_CHECK_EQUAL(car.GetGear(), 0);
+
+	BOOST_CHECK(car.SetGear(-1) != CCar::SetGearResult::SUCCESS);
+	BOOST_CHECK_EQUAL(car.GetGear(), 0);
+
+	BOOST_CHECK(car.SetGear(1) != CCar::SetGearResult::SUCCESS);
+	BOOST_CHECK_EQUAL(car.GetGear(), 0);
+
+	BOOST_CHECK(car.SetGear(5) != CCar::SetGearResult::SUCCESS);
+	BOOST_CHECK_EQUAL(car.GetGear(), 0);
+}
+
 BOOST_AUTO_TEST_SUITE_END()

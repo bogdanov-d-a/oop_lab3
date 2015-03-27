@@ -66,6 +66,11 @@ CCar::SetGearResult CCar::SetGear(Gear gear)
 		return SetGearResult::INCORRECT_GEAR;
 	}
 
+	if (!m_isTurnedOn && gear != 0)
+	{
+		return SetGearResult::ENGINE_OFF;
+	}
+
 	if (!SpeedMatchesGear(m_speed, gear))
 	{
 		return SetGearResult::SPEED_OUT_OF_RANGE;
