@@ -46,4 +46,39 @@ BOOST_AUTO_TEST_CASE(CanSwitchOntoNeutralWhenOff)
 	BOOST_CHECK_EQUAL(car.GetGear(), 0);
 }
 
+BOOST_AUTO_TEST_CASE(BasicDrivingWithSpeedAndGear)
+{
+	car.TurnOnEngine();
+
+	BOOST_CHECK(car.SetGear(1) == CCar::SetGearResult::SUCCESS);
+	BOOST_CHECK_EQUAL(car.GetGear(), 1);
+
+	BOOST_CHECK(car.SetSpeed(31) == CCar::SetSpeedResult::UNSUITABLE_SPEED);
+	BOOST_CHECK_EQUAL(car.GetSpeed(), 0);
+
+	BOOST_CHECK(car.SetSpeed(15) == CCar::SetSpeedResult::SUCCESS);
+	BOOST_CHECK_EQUAL(car.GetSpeed(), 15);
+
+	BOOST_CHECK(car.SetGear(2) == CCar::SetGearResult::SPEED_OUT_OF_RANGE);
+	BOOST_CHECK_EQUAL(car.GetGear(), 1);
+
+	BOOST_CHECK(car.SetSpeed(30) == CCar::SetSpeedResult::SUCCESS);
+	BOOST_CHECK_EQUAL(car.GetSpeed(), 30);
+
+	BOOST_CHECK(car.SetGear(2) == CCar::SetGearResult::SUCCESS);
+	BOOST_CHECK_EQUAL(car.GetGear(), 2);
+
+	BOOST_CHECK(car.SetSpeed(40) == CCar::SetSpeedResult::SUCCESS);
+	BOOST_CHECK_EQUAL(car.GetSpeed(), 40);
+}
+
+BOOST_AUTO_TEST_CASE(SpeedIsNeverNegative)
+{
+	car.TurnOnEngine();
+	car.SetGear(1);
+
+	BOOST_CHECK(car.SetSpeed(-1) == CCar::SetSpeedResult::OUT_OF_RANGE);
+	BOOST_CHECK_EQUAL(car.GetSpeed(), 0);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
