@@ -35,9 +35,9 @@ CCar::SetSpeedResult CCar::SetSpeed(Speed speed)
 
 	if (m_gear == 0)
 	{
-		if (speed > m_speed)
+		if (speed >= m_speed)
 		{
-			return SetSpeedResult::ACCELERATION_ON_NEUTRAL;
+			return SetSpeedResult::NO_SLOWDOWN_ON_NEUTRAL;
 		}
 
 		if (speed == 0)

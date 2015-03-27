@@ -81,4 +81,16 @@ BOOST_AUTO_TEST_CASE(SpeedIsNeverNegative)
 	BOOST_CHECK_EQUAL(car.GetSpeed(), 0);
 }
 
+BOOST_AUTO_TEST_CASE(NeutralGearSlowdownOnly)
+{
+	car.TurnOnEngine();
+	car.SetGear(1);
+	car.SetSpeed(30);
+	BOOST_CHECK(car.SetGear(0) == CCar::SetGearResult::SUCCESS);
+
+	BOOST_CHECK(car.SetSpeed(31) == CCar::SetSpeedResult::NO_SLOWDOWN_ON_NEUTRAL);
+	BOOST_CHECK(car.SetSpeed(30) == CCar::SetSpeedResult::NO_SLOWDOWN_ON_NEUTRAL);
+	BOOST_CHECK(car.SetSpeed(29) == CCar::SetSpeedResult::SUCCESS);
+}
+
 BOOST_AUTO_TEST_SUITE_END()

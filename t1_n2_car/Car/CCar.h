@@ -20,7 +20,7 @@ public:
 		SUCCESS,
 		OUT_OF_RANGE,
 		UNSUITABLE_SPEED,
-		ACCELERATION_ON_NEUTRAL };
+		NO_SLOWDOWN_ON_NEUTRAL };
 
 	static const Gear GEAR_MIN = -1;
 	static const Gear GEAR_MAX = 5;
