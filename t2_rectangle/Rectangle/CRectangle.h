@@ -28,6 +28,7 @@ public:
 	void Move(Coord dx, Coord dy);
 	void Scale(int sx, int sy);
 	bool Intersect(CRectangle const& other);
+	bool operator==(CRectangle const& other);
 
 private:
 	struct Range { Coord start, end; };

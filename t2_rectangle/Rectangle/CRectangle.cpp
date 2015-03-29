@@ -118,6 +118,17 @@ bool CRectangle::Intersect(CRectangle const& other)
 	return true;
 }
 
+bool CRectangle::operator==(CRectangle const& other)
+{
+	return
+	(
+		(m_left == other.m_left) &&
+		(m_top == other.m_top) &&
+		(m_width == other.m_width) &&
+		(m_height == other.m_height)
+	);
+}
+
 int CRectangle::BlockNegativeValue(int value)
 {
 	return ((value < 0) ? 0 : value);
