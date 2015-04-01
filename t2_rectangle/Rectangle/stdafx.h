@@ -15,3 +15,8 @@
 // TODO: reference additional headers your program requires here
 
 #include "CRectangleHeader.h"
+#include <string>
+#include <vector>
+#include <cassert>
+#include <iostream>
+#include <fstream>
