@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "CRectangle.h"
+#include "Canvas.h"
 
 using namespace std;
 
@@ -160,6 +161,17 @@ void PrintRectangleData(CRectangle const& rect, string const& name)
 	cout << "\tPerimeter: " << rect.GetPerimeter() << "\n";
 }
 
+void FillRectangle(CRectangle const& rect, char code, CCanvas &canvas)
+{
+	for (CRectangle::Coord x = rect.GetLeft(); x < rect.GetRight(); ++x)
+	{
+		for (CRectangle::Coord y = rect.GetTop(); y < rect.GetBottom(); ++y)
+		{
+			canvas.SetPixel(x, y, code);
+		}
+	}
+}
+
 int _tmain(int argc, _TCHAR* argv[])
 {
 	if (argc != 3 && argc != 4)
@@ -179,6 +191,19 @@ int _tmain(int argc, _TCHAR* argv[])
 	intersectedRect.Intersect(rect2);
 	PrintRectangleData(intersectedRect, "Intersection rectangle");
 
-	getchar();
+	CCanvas canvas(60, 20);
+	FillRectangle(rect1, '+', canvas);
+	FillRectangle(rect2, '-', canvas);
+	FillRectangle(intersectedRect, '#', canvas);
+	
+	if (argc == 4)
+	{
+		canvas.Write(ofstream(argv[3]));
+	}
+	else
+	{
+		canvas.Write(cout);
+	}
+
 	return 0;
 }
