@@ -1,11 +1,11 @@
 #include "stdafx.h"
 #include "CRectangle.h"
 
-CRectangle::CRectangle(Coord left, Coord top, Size width, Size height):
-	m_left(left),
-	m_top(top),
-	m_width(BlockNegativeValue(width)),
-	m_height(BlockNegativeValue(height))
+CRectangle::CRectangle(Coord left, Coord top, Size width, Size height)
+	:m_left(left)
+	,m_top(top)
+	,m_width(BlockNegativeValue(width))
+	,m_height(BlockNegativeValue(height))
 {}
 
 CRectangle::Size CRectangle::GetWidth() const
