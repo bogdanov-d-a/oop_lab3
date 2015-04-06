@@ -84,3 +84,10 @@ BOOST_AUTO_TEST_CASE(DifferentPartialPostAddresses)
 	CPostAddress addr2("city2", "street", "", "");
 	BOOST_CHECK(addr1 != addr2);
 }
+
+BOOST_AUTO_TEST_CASE(TestPostAddressCaseInsensitivity)
+{
+	CPostAddress addr1("city", "street", "building", "apartment");
+	CPostAddress addr2("City", "StrEEt", "BUildiNG", "aPARTment");
+	BOOST_CHECK(addr1 == addr2);
+}

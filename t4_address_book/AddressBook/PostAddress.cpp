@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "PostAddress.h"
+#include "StringUtils.h"
 
 using namespace std;
 
@@ -29,5 +30,5 @@ bool CPostAddress::operator!=(CPostAddress const &other) const
 
 bool CPostAddress::SameFields(string const& a, string const& b)
 {
-	return (a.empty() || b.empty() || a == b);
+	return (a.empty() || b.empty() || CaseInsensitiveMatch(a, b));
 }
