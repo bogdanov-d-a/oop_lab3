@@ -3,8 +3,8 @@
 
 using namespace std;
 
-CContactCollection::ContactListConstIterators
-CContactCollection::SearchByName(string const& name) const
+CContactCollection::ContactListIterators
+CContactCollection::SearchByName(string const& name)
 {
 	return SearchByCondition([&name](CContact const& contact)
 	{
@@ -12,8 +12,8 @@ CContactCollection::SearchByName(string const& name) const
 	});
 }
 
-CContactCollection::ContactListConstIterators
-CContactCollection::SearchByPostAddress(CPostAddress const& address) const
+CContactCollection::ContactListIterators
+CContactCollection::SearchByPostAddress(CPostAddress const& address)
 {
 	return SearchByCondition([&address](CContact const& contact)
 	{
@@ -21,8 +21,8 @@ CContactCollection::SearchByPostAddress(CPostAddress const& address) const
 	});
 }
 
-CContactCollection::ContactListConstIterators
-CContactCollection::SearchByPhoneNumber(std::string const& number) const
+CContactCollection::ContactListIterators
+CContactCollection::SearchByPhoneNumber(string const& number)
 {
 	return SearchByCondition([&number](CContact const& contact)
 	{
@@ -30,8 +30,8 @@ CContactCollection::SearchByPhoneNumber(std::string const& number) const
 	});
 }
 
-CContactCollection::ContactListConstIterators
-CContactCollection::SearchByEmailAddress(std::string const& address) const
+CContactCollection::ContactListIterators
+CContactCollection::SearchByEmailAddress(string const& address)
 {
 	return SearchByCondition([&address](CContact const& contact)
 	{
@@ -39,12 +39,22 @@ CContactCollection::SearchByEmailAddress(std::string const& address) const
 	});
 }
 
-CContactCollection::ContactListConstIterators
-CContactCollection::SearchByCondition(function<bool(CContact const&)> statementFunction) const
+void CContactCollection::RemoveContact(ContactList::iterator elemIter)
 {
-	vector<ContactList::const_iterator> result;
+	m_contacts.erase(elemIter);
+}
 
-	for (auto contactIter = m_contacts.cbegin(); contactIter != m_contacts.cend(); ++contactIter)
+void CContactCollection::EditContact(ContactList::iterator elemIter, CContact const& newData)
+{
+	*elemIter = newData;
+}
+
+CContactCollection::ContactListIterators
+CContactCollection::SearchByCondition(function<bool(CContact const&)> statementFunction)
+{
+	vector<ContactList::iterator> result;
+
+	for (auto contactIter = m_contacts.begin(); contactIter != m_contacts.end(); ++contactIter)
 	{
 		if (statementFunction(*contactIter))
 		{

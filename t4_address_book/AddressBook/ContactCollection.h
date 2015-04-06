@@ -5,17 +5,18 @@
 class CContactCollection
 {
 public:
-	typedef std::forward_list<CContact> ContactList;
-	typedef std::vector<ContactList::const_iterator> ContactListConstIterators;
+	typedef std::list<CContact> ContactList;
+	typedef std::vector<ContactList::iterator> ContactListIterators;
 
-	ContactListConstIterators SearchByName(std::string const& name) const;
-	ContactListConstIterators SearchByPostAddress(CPostAddress const& address) const;
-	ContactListConstIterators SearchByPhoneNumber(std::string const& number) const;
-	ContactListConstIterators SearchByEmailAddress(std::string const& address) const;
+	ContactListIterators SearchByName(std::string const& name);
+	ContactListIterators SearchByPostAddress(CPostAddress const& address);
+	ContactListIterators SearchByPhoneNumber(std::string const& number);
+	ContactListIterators SearchByEmailAddress(std::string const& address);
+
+	void RemoveContact(ContactList::iterator elemIter);
+	void EditContact(ContactList::iterator elemIter, CContact const& newData);
 
 private:
 	ContactList m_contacts;
-
-	ContactListConstIterators SearchByCondition(
-		std::function<bool(CContact const&)> statementFunction) const;
+	ContactListIterators SearchByCondition(std::function<bool(CContact const&)> statementFunction);
 };
