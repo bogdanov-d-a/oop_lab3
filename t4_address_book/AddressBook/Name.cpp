@@ -4,37 +4,22 @@
 
 using namespace std;
 
-CName::CName(string const& firstName, string const& lastName, string const& patronymic)
-{
-	m_fields[0] = firstName;
-	m_fields[1] = lastName;
-	m_fields[2] = patronymic;
-}
+CName::CName(string const& str)
+	:m_str(str)
+	,m_fields(GetStringWords(str))
+{}
 
 bool CName::CompareWithString(string const& str) const
 {
-	set<string> strWordSet = GetStringWords(str);
+	const set<string> strWordSet = GetStringWords(str);
 
 	for (auto strWord : strWordSet)
 	{
-		if (!WordIncluded(strWord))
+		if (m_fields.find(strWord) == m_fields.cend())
 		{
 			return false;
 		}
 	}
 
 	return true;
-}
-
-bool CName::WordIncluded(std::string const& word) const
-{
-	for (auto field : m_fields)
-	{
-		if (CaseInsensitiveMatch(word, field))
-		{
-			return true;
-		}
-	}
-	
-	return false;
 }

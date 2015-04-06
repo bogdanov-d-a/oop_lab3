@@ -8,6 +8,19 @@ typedef function<void(string const&)> SendStringFunction;
 
 const locale loc("rus_rus.866");
 
+string ToLower(string const& str)
+{
+	string result;
+	result.resize(str.length());
+	transform(str.cbegin(), str.cend(), result.begin(), tolower);
+	return result;
+}
+
+bool CaseInsensitiveMatch(string const& a, string const& b)
+{
+	return (ToLower(a) == ToLower(b));
+}
+
 void FlushBuffer(string &buffer, SendStringFunction callback)
 {
 	if (!buffer.empty())
@@ -44,20 +57,7 @@ set<string> GetStringWords(string const& str)
 	istringstream srcStream(str);
 
 	SplitWords(srcStream, [](char c){},
-		[&result](string const& str){ result.insert(str); });
+		[&result](string const& str){ result.insert(ToLower(str)); });
 
 	return result;
-}
-
-string ToLower(string const& str)
-{
-	string result;
-	result.resize(str.length());
-	transform(str.cbegin(), str.cend(), result.begin(), tolower);
-	return result;
-}
-
-bool CaseInsensitiveMatch(string const& a, string const& b)
-{
-	return (ToLower(a) == ToLower(b));
 }

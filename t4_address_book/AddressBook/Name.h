@@ -3,10 +3,10 @@
 class CName
 {
 public:
-	CName(std::string const& firstName, std::string const& lastName, std::string const& patronymic);
+	CName(std::string const& str);
 	bool CompareWithString(std::string const& str) const;
 
 private:
-	std::string m_fields[3];
-	bool WordIncluded(std::string const& word) const;
+	std::string m_str;
+	std::set<std::string> m_fields;
 };

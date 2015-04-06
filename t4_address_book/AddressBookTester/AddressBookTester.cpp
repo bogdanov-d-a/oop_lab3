@@ -6,34 +6,33 @@
 
 using namespace std;
 
-bool NameAndStringMatch(string const& firstName, string const& lastName,
-	string const& patronymic, string const& searchStr)
+bool NameAndStringMatch(string const& name, string const& str)
 {
-	CName name(firstName, lastName, patronymic);
-	return name.CompareWithString(searchStr);
+	CName nameObj(name);
+	return nameObj.CompareWithString(str);
 }
 
-BOOST_AUTO_TEST_CASE(EmptyStringMatches)
+BOOST_AUTO_TEST_CASE(EmptyStringMatchesName)
 {
-	BOOST_CHECK(NameAndStringMatch("FirstName", "LastName", "Patronymic", ""));
+	BOOST_CHECK(NameAndStringMatch("FirstName LastName Patronymic", ""));
 }
 
-BOOST_AUTO_TEST_CASE(OneMatchWord)
+BOOST_AUTO_TEST_CASE(OneMatchNameWord)
 {
-	CName name("FirstName", "LastName", "Patronymic");
+	CName name("FirstName LastName Patronymic");
 	BOOST_CHECK(name.CompareWithString("FirstName"));
 	BOOST_CHECK(name.CompareWithString("LastName"));
 	BOOST_CHECK(name.CompareWithString("Patronymic"));
 }
 
-BOOST_AUTO_TEST_CASE(RedundantSpaces)
+BOOST_AUTO_TEST_CASE(NameRedundantSpaces)
 {
-	BOOST_CHECK(NameAndStringMatch("FirstName", "LastName", "Patronymic", "     FirstName    "));
+	BOOST_CHECK(NameAndStringMatch("FirstName  LastName Patronymic  ", "     FirstName    "));
 }
 
-BOOST_AUTO_TEST_CASE(SpecificationExamples)
+BOOST_AUTO_TEST_CASE(SpecificationNames)
 {
-	CName name("Сергей", "Иванов", "Петрович");
+	CName name("Иванов Сергей Петрович");
 
 	BOOST_CHECK(name.CompareWithString("Сергей иванов"));
 	BOOST_CHECK(name.CompareWithString("Иванов Сергей"));
