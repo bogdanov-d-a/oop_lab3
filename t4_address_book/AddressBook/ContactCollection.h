@@ -10,6 +10,8 @@ public:
 
 	ContactListConstIterators SearchByName(std::string const& name) const;
 	ContactListConstIterators SearchByPostAddress(CPostAddress const& address) const;
+	ContactListConstIterators SearchByPhoneNumber(std::string const& number) const;
+	ContactListConstIterators SearchByEmailAddress(std::string const& address) const;
 
 private:
 	ContactList m_contacts;

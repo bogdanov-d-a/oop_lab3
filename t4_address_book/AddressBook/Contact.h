@@ -9,8 +9,11 @@ public:
 	CContact(CName const& name, CPostAddress const& address);
 	void AddPhoneNumber(std::string const& number);
 	void AddEmailAddress(std::string const& address);
+
 	bool MatchesByName(std::string const& name) const;
 	bool MatchesByPostAddress(CPostAddress const& address) const;
+	bool MatchesByPhoneNumber(std::string const& number) const;
+	bool MatchesByEmailAddress(std::string const& address) const;
 
 private:
 	CName m_name;

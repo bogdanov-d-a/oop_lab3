@@ -22,6 +22,24 @@ CContactCollection::SearchByPostAddress(CPostAddress const& address) const
 }
 
 CContactCollection::ContactListConstIterators
+CContactCollection::SearchByPhoneNumber(std::string const& number) const
+{
+	return SearchByCondition([&number](CContact const& contact)
+	{
+		return contact.MatchesByPhoneNumber(number);
+	});
+}
+
+CContactCollection::ContactListConstIterators
+CContactCollection::SearchByEmailAddress(std::string const& address) const
+{
+	return SearchByCondition([&address](CContact const& contact)
+	{
+		return contact.MatchesByEmailAddress(address);
+	});
+}
+
+CContactCollection::ContactListConstIterators
 CContactCollection::SearchByCondition(function<bool(CContact const&)> statementFunction) const
 {
 	vector<ContactList::const_iterator> result;

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Contact.h"
+#include "StringUtils.h"
 
 using namespace std;
 
@@ -10,12 +11,12 @@ CContact::CContact(CName const& name, CPostAddress const& address)
 
 void CContact::AddPhoneNumber(string const& number)
 {
-	m_phoneNumbers.insert(number);
+	m_phoneNumbers.insert(ToLower(number));
 }
 
 void CContact::AddEmailAddress(string const& address)
 {
-	m_emailAddresses.insert(address);
+	m_emailAddresses.insert(ToLower(address));
 }
 
 bool CContact::MatchesByName(string const& name) const
@@ -26,4 +27,14 @@ bool CContact::MatchesByName(string const& name) const
 bool CContact::MatchesByPostAddress(CPostAddress const& address) const
 {
 	return (m_postAddress == address);
+}
+
+bool CContact::MatchesByPhoneNumber(string const& number) const
+{
+	return (m_phoneNumbers.find(ToLower(number)) != m_phoneNumbers.cend());
+}
+
+bool CContact::MatchesByEmailAddress(string const& address) const
+{
+	return (m_emailAddresses.find(ToLower(address)) != m_emailAddresses.cend());
 }
