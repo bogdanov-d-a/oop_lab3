@@ -22,3 +22,8 @@ bool CContact::MatchesByName(string const& name) const
 {
 	return m_name.CompareWithString(name);
 }
+
+bool CContact::MatchesByPostAddress(CPostAddress const& address) const
+{
+	return (m_postAddress == address);
+}
