@@ -7,7 +7,12 @@ using namespace std;
 CName::CName(string const& str)
 	:m_str(str)
 	,m_fields(GetStringWords(str))
-{}
+{
+	if (m_fields.empty())
+	{
+		throw invalid_argument("Name can't be empty");
+	}
+}
 
 bool CName::CompareWithString(string const& str) const
 {
