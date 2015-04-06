@@ -78,6 +78,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CAddressBookHeader.h" />
+    <ClInclude Include="Contact.h" />
+    <ClInclude Include="ContactCollection.h" />
     <ClInclude Include="Name.h" />
     <ClInclude Include="PostAddress.h" />
     <ClInclude Include="stdafx.h" />
@@ -86,6 +88,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddressBook.cpp" />
+    <ClCompile Include="Contact.cpp" />
+    <ClCompile Include="ContactCollection.cpp" />
     <ClCompile Include="Name.cpp" />
     <ClCompile Include="PostAddress.cpp" />
     <ClCompile Include="stdafx.cpp">
