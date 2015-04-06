@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "../AddressBook/Name.h"
+#include "../AddressBook/PostAddress.h"
 
 using namespace std;
 
@@ -47,4 +48,39 @@ BOOST_AUTO_TEST_CASE(SpecificationNames)
 	BOOST_CHECK(!name.CompareWithString("Иванов Иван Петрович"));
 	BOOST_CHECK(!name.CompareWithString("Иван"));
 	BOOST_CHECK(!name.CompareWithString("Семён Семёныч Горбунков"));
+}
+
+BOOST_AUTO_TEST_CASE(EmptyPostAddressesAreSame)
+{
+	CPostAddress addr1;
+	CPostAddress addr2;
+	BOOST_CHECK(addr1 == addr2);
+}
+
+BOOST_AUTO_TEST_CASE(SameFullPostAddresses)
+{
+	CPostAddress addr1("city", "street", "building", "apartment");
+	CPostAddress addr2(addr1);
+	BOOST_CHECK(addr1 == addr2);
+}
+
+BOOST_AUTO_TEST_CASE(DifferentFullPostAddresses)
+{
+	CPostAddress addr1("city", "street", "building", "apartment");
+	CPostAddress addr2("city2", "street", "building2", "apartment");
+	BOOST_CHECK(addr1 != addr2);
+}
+
+BOOST_AUTO_TEST_CASE(SamePartialPostAddresses)
+{
+	CPostAddress addr1("city", "street", "building", "apartment");
+	CPostAddress addr2("city", "street", "", "");
+	BOOST_CHECK(addr1 == addr2);
+}
+
+BOOST_AUTO_TEST_CASE(DifferentPartialPostAddresses)
+{
+	CPostAddress addr1("city", "street", "building", "apartment");
+	CPostAddress addr2("city2", "street", "", "");
+	BOOST_CHECK(addr1 != addr2);
 }
