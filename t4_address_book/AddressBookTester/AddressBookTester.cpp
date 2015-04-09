@@ -94,12 +94,24 @@ BOOST_AUTO_TEST_CASE(TestPostAddressCaseInsensitivity)
 
 BOOST_AUTO_TEST_CASE(TestNameRawData)
 {
-	CName name("TestName");
+	CName name1("TestName");
 	ostringstream rawDataOut;
-	name.WriteRawData(rawDataOut);
+	name1.WriteRawData(rawDataOut);
 	BOOST_CHECK_EQUAL(rawDataOut.str(), "8@TestName");
 
 	istringstream rawDataIn(rawDataOut.str());
 	CName name2(rawDataIn);
-	BOOST_CHECK(name == name2);
+	BOOST_CHECK(name1 == name2);
+}
+
+BOOST_AUTO_TEST_CASE(TestPostAddressRawData)
+{
+	CPostAddress addr1("long city name", "street", "building", "apartment");
+	ostringstream rawDataOut;
+	addr1.WriteRawData(rawDataOut);
+	BOOST_CHECK_EQUAL(rawDataOut.str(), "14@long city name6@street8@building9@apartment");
+
+	istringstream rawDataIn(rawDataOut.str());
+	CPostAddress addr2(rawDataIn);
+	BOOST_CHECK(addr1 == addr2);
 }

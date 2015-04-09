@@ -8,7 +8,10 @@ public:
 	CPostAddress(std::string const& city, std::string const& street,
 		std::string const& building, std::string const& apartment);
 
+	CPostAddress(std::istream &in);
+	void WriteRawData(std::ostream &out) const;
 	bool Compare(CPostAddress const &other) const;
+	bool operator==(CPostAddress const &other) const;
 
 private:
 	std::string m_city;
