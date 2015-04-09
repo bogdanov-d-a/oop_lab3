@@ -15,17 +15,12 @@ CPostAddress::CPostAddress(string const& city, string const& street,
 	,m_apartment(apartment)
 {}
 
-bool CPostAddress::operator==(CPostAddress const &other) const
+bool CPostAddress::Compare(CPostAddress const &other) const
 {
 	return (SameFields(m_city, other.m_city) &&
 		SameFields(m_street, other.m_street) &&
 		SameFields(m_building, other.m_building) &&
 		SameFields(m_apartment, other.m_apartment));
-}
-
-bool CPostAddress::operator!=(CPostAddress const &other) const
-{
-	return !(*this == other);
 }
 
 bool CPostAddress::SameFields(string const& a, string const& b)

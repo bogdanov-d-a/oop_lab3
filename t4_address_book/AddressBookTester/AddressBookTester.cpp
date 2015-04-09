@@ -54,42 +54,42 @@ BOOST_AUTO_TEST_CASE(EmptyPostAddressesAreSame)
 {
 	CPostAddress addr1;
 	CPostAddress addr2;
-	BOOST_CHECK(addr1 == addr2);
+	BOOST_CHECK(addr1.Compare(addr2));
 }
 
 BOOST_AUTO_TEST_CASE(SameFullPostAddresses)
 {
 	CPostAddress addr1("city", "street", "building", "apartment");
 	CPostAddress addr2(addr1);
-	BOOST_CHECK(addr1 == addr2);
+	BOOST_CHECK(addr1.Compare(addr2));
 }
 
 BOOST_AUTO_TEST_CASE(DifferentFullPostAddresses)
 {
 	CPostAddress addr1("city", "street", "building", "apartment");
 	CPostAddress addr2("city2", "street", "building2", "apartment");
-	BOOST_CHECK(addr1 != addr2);
+	BOOST_CHECK(!addr1.Compare(addr2));
 }
 
 BOOST_AUTO_TEST_CASE(SamePartialPostAddresses)
 {
 	CPostAddress addr1("city", "street", "building", "apartment");
 	CPostAddress addr2("city", "street", "", "");
-	BOOST_CHECK(addr1 == addr2);
+	BOOST_CHECK(addr1.Compare(addr2));
 }
 
 BOOST_AUTO_TEST_CASE(DifferentPartialPostAddresses)
 {
 	CPostAddress addr1("city", "street", "building", "apartment");
 	CPostAddress addr2("city2", "street", "", "");
-	BOOST_CHECK(addr1 != addr2);
+	BOOST_CHECK(!addr1.Compare(addr2));
 }
 
 BOOST_AUTO_TEST_CASE(TestPostAddressCaseInsensitivity)
 {
 	CPostAddress addr1("city", "street", "building", "apartment");
 	CPostAddress addr2("City", "StrEEt", "BUildiNG", "aPARTment");
-	BOOST_CHECK(addr1 == addr2);
+	BOOST_CHECK(addr1.Compare(addr2));
 }
 
 BOOST_AUTO_TEST_CASE(TestNameRawData)
