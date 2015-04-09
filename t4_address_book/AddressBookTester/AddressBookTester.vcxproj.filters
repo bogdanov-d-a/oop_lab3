@@ -41,5 +41,8 @@
     <ClCompile Include="..\AddressBook\PostAddress.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\AddressBook\RawDataUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
