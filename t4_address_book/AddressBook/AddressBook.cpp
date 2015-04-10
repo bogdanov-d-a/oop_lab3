@@ -64,6 +64,12 @@ string PromptString(string const& prompt)
 	return ReadString();
 }
 
+int PromptInt(string const& prompt, int errVal)
+{
+	cout << prompt;
+	return ReadInt(errVal);
+}
+
 CPostAddress PromptPostAddress()
 {
 	return CPostAddress(PromptString("Enter city: "),
@@ -141,7 +147,7 @@ set<string> PromptSet(string prompt)
 
 CContact PromptContact()
 {
-	return CContact(PromptString("Enter name: "),
+	return CContact(CName(PromptString("Enter name: ")),
 		PromptPostAddress(),
 		PromptSet("Enter phone numbers: "),
 		PromptSet("Enter email adresses: "));
@@ -189,7 +195,16 @@ int _tmain(int argc, _TCHAR* argv[])
 				collection.AddContact(PromptContact());
 				break;
 
-			// finish this
+			case 3:
+			{
+				const int id = PromptInt("Enter ID: ", -1);
+				collection.EditContact(id, PromptContact());
+				break;
+			}
+
+			case 4:
+				collection.RemoveContact(PromptInt("Enter ID: ", -1));
+				break;
 
 			case 5:
 				stopLoop = true;
