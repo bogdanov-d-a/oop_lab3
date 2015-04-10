@@ -5,6 +5,9 @@
 class CContactCollection
 {
 public:
+	void ReadRawData(std::istream &in);
+	void WriteRawData(std::ostream &out) const;
+
 	typedef std::list<CContact> ContactList;
 	typedef std::vector<ContactList::iterator> ContactListIterators;
 
@@ -15,6 +18,9 @@ public:
 
 	void RemoveContact(ContactList::iterator elemIter);
 	void EditContact(ContactList::iterator elemIter, CContact const& newData);
+	void AddContact(CContact const& contact);
+
+	bool operator==(CContactCollection const& other) const;
 
 private:
 	ContactList m_contacts;

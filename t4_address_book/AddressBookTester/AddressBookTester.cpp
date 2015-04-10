@@ -5,6 +5,7 @@
 #include "../AddressBook/Name.h"
 #include "../AddressBook/PostAddress.h"
 #include "../AddressBook/Contact.h"
+#include "../AddressBook/ContactCollection.h"
 
 using namespace std;
 
@@ -132,4 +133,20 @@ BOOST_AUTO_TEST_CASE(TestContactRawData)
 	istringstream rawDataIn(rawDataOut.str());
 	CContact contact2(rawDataIn);
 	BOOST_CHECK(contact1 == contact2);
+}
+
+BOOST_AUTO_TEST_CASE(TestContactCollectionRawData)
+{
+	CContactCollection col1;
+	col1.AddContact(CContact(CName("1"), CPostAddress()));
+	col1.AddContact(CContact(CName("2"), CPostAddress()));
+
+	ostringstream rawDataOut;
+	col1.WriteRawData(rawDataOut);
+	BOOST_CHECK_EQUAL(rawDataOut.str(), "2@1@10@0@0@0@0@0@1@20@0@0@0@0@0@");
+
+	istringstream rawDataIn(rawDataOut.str());
+	CContactCollection col2;
+	col2.ReadRawData(rawDataIn);
+	BOOST_CHECK(col1 == col2);
 }

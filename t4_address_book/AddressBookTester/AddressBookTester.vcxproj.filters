@@ -47,5 +47,8 @@
     <ClCompile Include="..\AddressBook\Contact.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\AddressBook\ContactCollection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

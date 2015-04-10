@@ -90,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\AddressBook\Contact.cpp" />
+    <ClCompile Include="..\AddressBook\ContactCollection.cpp" />
     <ClCompile Include="..\AddressBook\Name.cpp" />
     <ClCompile Include="..\AddressBook\PostAddress.cpp" />
     <ClCompile Include="..\AddressBook\RawDataUtils.cpp" />
