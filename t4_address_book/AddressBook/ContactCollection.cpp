@@ -4,6 +4,10 @@
 
 using namespace std;
 
+CContactCollection::CContactCollection()
+	:m_changed(false)
+{}
+
 void CContactCollection::ReadRawData(istream &in)
 {
 	m_contacts.clear();
@@ -12,6 +16,8 @@ void CContactCollection::ReadRawData(istream &in)
 	{
 		m_contacts.push_back(CContact(in));
 	}
+
+	m_changed = false;
 }
 
 void CContactCollection::WriteRawData(ostream &out) const
@@ -23,6 +29,11 @@ void CContactCollection::WriteRawData(ostream &out) const
 	{
 		contact.WriteRawData(out);
 	}
+}
+
+bool CContactCollection::ChangedSinceLastRawDataReading() const
+{
+	return m_changed;
 }
 
 CContactCollection::ListIterators
@@ -64,16 +75,19 @@ CContactCollection::SearchByEmailAddress(string const& address)
 void CContactCollection::RemoveContact(List::iterator elemIter)
 {
 	m_contacts.erase(elemIter);
+	m_changed = true;
 }
 
 void CContactCollection::EditContact(List::iterator elemIter, CContact const& newData)
 {
 	*elemIter = newData;
+	m_changed = true;
 }
 
 void CContactCollection::AddContact(CContact const& contact)
 {
 	m_contacts.push_back(contact);
+	m_changed = true;
 }
 
 bool CContactCollection::operator==(CContactCollection const& other) const

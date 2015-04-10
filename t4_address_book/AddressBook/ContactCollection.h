@@ -8,8 +8,10 @@ public:
 	typedef std::list<CContact> List;
 	typedef std::vector<List::iterator> ListIterators;
 
+	CContactCollection();
 	void ReadRawData(std::istream &in);
 	void WriteRawData(std::ostream &out) const;
+	bool ChangedSinceLastRawDataReading() const;
 
 	ListIterators SearchByName(std::string const& name);
 	ListIterators SearchByPostAddress(CPostAddress const& address);
@@ -24,5 +26,7 @@ public:
 
 private:
 	List m_contacts;
+	bool m_changed;
+
 	ListIterators SearchByCondition(std::function<bool(CContact const&)> statementFunction);
 };
