@@ -25,12 +25,43 @@ string SetToString(set<string> const& s)
 	return result;
 }
 
+void PrintSetIfNonempty(string const& announce, set<string> const& s)
+{
+	if (!s.empty())
+	{
+		cout << announce << SetToString(s) << endl;
+	}
+}
+
+string ReadString()
+{
+	string result;
+
+	if (!getline(cin, result))
+	{
+		return string();
+	}
+
+	return result;
+}
+
+int ReadInt(int errVal)
+{
+	try
+	{
+		return stoi(ReadString());
+	}
+	catch (invalid_argument const& e)
+	{
+		(void)e;
+		return errVal;
+	}
+}
+
 string PromptString(string const& prompt)
 {
 	cout << prompt;
-	string result;
-	getline(cin, result);
-	return result;
+	return ReadString();
 }
 
 CPostAddress PromptPostAddress()
@@ -49,71 +80,35 @@ void HandleSearchRequest(CContactCollection const& collection)
 	cout << "3. Phone number" << endl;
 	cout << "4. Email address" << endl;
 
-	string line;
-	if (!getline(cin, line))
-	{
-		return;
-	}
-
-	int answer;
-	try
-	{
-		answer = stoi(line);
-	}
-	catch (invalid_argument const& e)
-	{
-		(void)e;
-		cout << "Wrong answer format" << endl;
-		return;
-	}
-
+	const int answer = ReadInt(0);
 	CContactCollection::SearchResults searchResults;
 
 	switch (answer)
 	{
 	case 1:
-	{
-		cout << "Enter name: ";
-		string name;
-		if (!getline(cin, name))
-		{
-			return;
-		}
-		searchResults = collection.SearchByName(name);
+		searchResults = collection.SearchByName(PromptString("Enter name: "));
 		break;
-	}
 
 	case 2:
-	{
 		searchResults = collection.SearchByPostAddress(PromptPostAddress());
 		break;
-	}
 
 	// finish this
 
 	default:
+		cout << "Wrong answer" << endl;
 		return;
 	}
 
 	for (auto searchResult : searchResults)
 	{
-		auto const& data = *searchResult.it;
-
 		cout << "ID: " << searchResult.ind << endl;
+
+		auto const& data = *searchResult.it;
 		cout << "Name: " << data.GetName() << endl;
 		data.PrintPostAddress(cout);
-
-		set<string> const& phones = data.GetPhoneNumbers();
-		if (!phones.empty())
-		{
-			cout << "Phone numbers: " << SetToString(phones) << endl;
-		}
-
-		set<string> const& emails = data.GetEmailAddresses();
-		if (!emails.empty())
-		{
-			cout << "Email adresses: " << SetToString(emails) << endl;
-		}
+		PrintSetIfNonempty("Phone numbers: ", data.GetPhoneNumbers());
+		PrintSetIfNonempty("Email adresses: ", data.GetEmailAddresses());
 	}
 }
 
@@ -134,6 +129,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		cout << "Database was not loaded; it will be created on save attempt." << endl;
 	}
 
+
 	bool stopLoop = false;
 	do
 	{
@@ -144,42 +140,25 @@ int _tmain(int argc, _TCHAR* argv[])
 		cout << "4. Remove contact" << endl;
 		cout << "5. Quit" << endl;
 
-		string curLine;
-		if (!getline(cin, curLine))
+		const int answer = ReadInt(0);
+		switch (answer)
 		{
+		case 1:
+			HandleSearchRequest(collection);
+			break;
+
+		// finish this
+
+		case 5:
 			stopLoop = true;
-		}
-		else
-		{
-			int answer;
-			try
-			{
-				answer = stoi(curLine);
+			break;
 
-				switch (answer)
-				{
-				case 1:
-					HandleSearchRequest(collection);
-					break;
-
-				// finish this
-
-				case 5:
-					stopLoop = true;
-					break;
-
-				default:
-					cout << "Number is out of range" << endl;
-				}
-			}
-			catch (invalid_argument const& e)
-			{
-				(void)e;
-				cout << "Wrong answer format" << endl;
-			}
+		default:
+			cout << "Wrong answer" << endl;
 		}
 	}
 	while (!stopLoop);
+
 
 	if (collection.ChangedSinceLastRawDataReading())
 	{
