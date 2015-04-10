@@ -7,6 +7,10 @@ class CContact
 {
 public:
 	CContact(CName const& name, CPostAddress const& address);
+
+	CContact(CName const& name, CPostAddress const& address,
+		std::set<std::string> const& phoneNumbers, std::set<std::string> const& emailAdresses);
+
 	CContact(std::istream &in);
 	void WriteRawData(std::ostream &out) const;
 

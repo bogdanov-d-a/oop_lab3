@@ -114,6 +114,39 @@ void HandleSearchRequest(CContactCollection const& collection)
 	}
 }
 
+vector<string> SplitString(string const& str, char delimiter)
+{
+	vector<string> result;
+	size_t startIndex = 0;
+
+	while (startIndex < str.length())
+	{
+		const size_t delimiterIndex = str.find(delimiter, startIndex);
+		const bool delimiterFound = (delimiterIndex != string::npos);
+		const size_t partLength = delimiterFound ? delimiterIndex - startIndex : string::npos;
+
+		result.push_back(str.substr(startIndex, partLength));
+		startIndex = delimiterFound ? delimiterIndex + 1 : string::npos;
+	}
+
+	return result;
+}
+
+set<string> PromptSet(string prompt)
+{
+	cout << prompt;
+	const vector<string> tmpVect = SplitString(ReadString(), ' ');
+	return set<string>(tmpVect.cbegin(), tmpVect.cend());
+}
+
+CContact PromptContact()
+{
+	return CContact(PromptString("Enter name: "),
+		PromptPostAddress(),
+		PromptSet("Enter phone numbers: "),
+		PromptSet("Enter email adresses: "));
+}
+
 int _tmain(int argc, _TCHAR* argv[])
 {
 	const char DB_FILENAME[] = "database.txt";
@@ -147,6 +180,17 @@ int _tmain(int argc, _TCHAR* argv[])
 		{
 		case 1:
 			HandleSearchRequest(collection);
+			break;
+
+		case 2:
+			try
+			{
+				collection.AddContact(PromptContact());
+			}
+			catch (runtime_error const& e)
+			{
+				cout << e.what() << endl;
+			}
 			break;
 
 		// finish this

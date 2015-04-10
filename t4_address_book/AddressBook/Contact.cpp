@@ -10,6 +10,14 @@ CContact::CContact(CName const& name, CPostAddress const& address)
 	,m_postAddress(address)
 {}
 
+CContact::CContact(CName const& name, CPostAddress const& address,
+	set<string> const& phoneNumbers, set<string> const& emailAdresses)
+	:m_name(name)
+	,m_postAddress(address)
+	,m_phoneNumbers(phoneNumbers)
+	,m_emailAddresses(emailAdresses)
+{}
+
 CContact::CContact(istream &in)
 	:m_name(in)
 	,m_postAddress(in)
@@ -68,7 +76,7 @@ string CContact::GetName() const
 	return m_name.GetString();
 }
 
-void CContact::PrintPostAddress(std::ostream &out) const
+void CContact::PrintPostAddress(ostream &out) const
 {
 	m_postAddress.Print(out);
 }
