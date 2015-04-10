@@ -62,3 +62,13 @@ bool CContact::operator==(const CContact &other) const
 		m_phoneNumbers == other.m_phoneNumbers &&
 		m_emailAddresses == other.m_emailAddresses);
 }
+
+const set<string>& CContact::GetPhoneNumbers() const
+{
+	return m_phoneNumbers;
+}
+
+const set<string>& CContact::GetEmailAddresses() const
+{
+	return m_emailAddresses;
+}

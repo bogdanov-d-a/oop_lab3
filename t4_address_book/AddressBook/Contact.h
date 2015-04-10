@@ -19,6 +19,9 @@ public:
 	bool MatchesByEmailAddress(std::string const& address) const;
 	bool operator==(const CContact &other) const;
 
+	const std::set<std::string>& GetPhoneNumbers() const;
+	const std::set<std::string>& GetEmailAddresses() const;
+
 private:
 	CName m_name;
 	CPostAddress m_postAddress;

@@ -80,6 +80,11 @@ void CContactCollection::RemoveContact(List::iterator elemIter)
 
 void CContactCollection::EditContact(List::iterator elemIter, CContact const& newData)
 {
+	if (!CheckNewContact(newData, elemIter))
+	{
+		throw runtime_error("Duplicate email address found");
+	}
+
 	*elemIter = newData;
 	m_changed = true;
 }
@@ -87,6 +92,11 @@ void CContactCollection::EditContact(List::iterator elemIter, CContact const& ne
 CContactCollection::List::iterator
 CContactCollection::AddContact(CContact const& contact)
 {
+	if (!CheckNewContact(contact, m_contacts.end()))
+	{
+		throw runtime_error("Duplicate email address found");
+	}
+
 	m_contacts.push_back(contact);
 	m_changed = true;
 	return --m_contacts.end();
@@ -111,4 +121,24 @@ CContactCollection::SearchByCondition(function<bool(CContact const&)> statementF
 	}
 
 	return result;
+}
+
+bool CContactCollection::CheckNewContact(CContact const& contact, List::iterator exclude)
+{
+	const set<string>& contactEmails = contact.GetEmailAddresses();
+
+	for (auto contactEmail : contactEmails)
+	{
+		const ListIterators found = SearchByEmailAddress(contactEmail);
+		const bool nothingFound = found.empty();
+		const bool onlyExcludedFound = (found.size() == 1 && found.front() == exclude);
+		const bool emailIsNotDuplicate = (nothingFound || onlyExcludedFound);
+
+		if (!emailIsNotDuplicate)
+		{
+			return false;
+		}
+	}
+
+	return true;
 }

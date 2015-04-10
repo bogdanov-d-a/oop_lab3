@@ -150,3 +150,54 @@ BOOST_AUTO_TEST_CASE(TestContactCollectionRawData)
 	col2.ReadRawData(rawDataIn);
 	BOOST_CHECK(col1 == col2);
 }
+
+BOOST_AUTO_TEST_CASE(TestContactCollectionEmailDuplicates)
+{
+	CContactCollection col;
+	{
+		CContact contact(CName("Name1"), CPostAddress());
+		contact.AddEmailAddress("Common");
+		contact.AddEmailAddress("Email1");
+		col.AddContact(contact);
+	}
+
+	{
+		CContact contact(CName("Name2"), CPostAddress());
+		contact.AddEmailAddress("CoMMoN");
+		contact.AddEmailAddress("Email2");
+
+		bool exceptionCaught = false;
+		try
+		{
+			col.AddContact(contact);
+		}
+		catch (runtime_error const& e)
+		{
+			(void)e;
+			exceptionCaught = true;
+		}
+		BOOST_CHECK(exceptionCaught);
+	}
+
+	{
+		CContact contact(CName("Name2"), CPostAddress());
+		contact.AddEmailAddress("Email2");
+
+		auto contactIter = col.AddContact(contact);
+		col.EditContact(contactIter, contact);
+
+		contact.AddEmailAddress("Common");
+
+		bool exceptionCaught = false;
+		try
+		{
+			col.EditContact(contactIter, contact);
+		}
+		catch (runtime_error const& e)
+		{
+			(void)e;
+			exceptionCaught = true;
+		}
+		BOOST_CHECK(exceptionCaught);
+	}
+}

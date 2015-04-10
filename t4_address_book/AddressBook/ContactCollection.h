@@ -29,4 +29,5 @@ private:
 	bool m_changed;
 
 	ListIterators SearchByCondition(std::function<bool(CContact const&)> statementFunction);
+	bool CheckNewContact(CContact const& contact, List::iterator exclude);
 };
