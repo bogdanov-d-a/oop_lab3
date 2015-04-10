@@ -25,6 +25,22 @@ string SetToString(set<string> const& s)
 	return result;
 }
 
+string PromptString(string const& prompt)
+{
+	cout << prompt;
+	string result;
+	getline(cin, result);
+	return result;
+}
+
+CPostAddress PromptPostAddress()
+{
+	return CPostAddress(PromptString("Enter city: "),
+		PromptString("Enter street: "),
+		PromptString("Enter building: "),
+		PromptString("Enter apartment: "));
+}
+
 void HandleSearchRequest(CContactCollection const& collection)
 {
 	cout << "Choose search criteria:" << endl;
@@ -64,6 +80,12 @@ void HandleSearchRequest(CContactCollection const& collection)
 			return;
 		}
 		searchResults = collection.SearchByName(name);
+		break;
+	}
+
+	case 2:
+	{
+		searchResults = collection.SearchByPostAddress(PromptPostAddress());
 		break;
 	}
 
