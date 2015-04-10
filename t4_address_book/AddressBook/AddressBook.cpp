@@ -88,13 +88,15 @@ void HandleSearchRequest(CContactCollection const& collection)
 	case 1:
 		searchResults = collection.SearchByName(PromptString("Enter name: "));
 		break;
-
 	case 2:
 		searchResults = collection.SearchByPostAddress(PromptPostAddress());
 		break;
-
-	// finish this
-
+	case 3:
+		searchResults = collection.SearchByPhoneNumber(PromptString("Enter phone number: "));
+		break;
+	case 4:
+		searchResults = collection.SearchByEmailAddress(PromptString("Enter email address: "));
+		break;
 	default:
 		cout << "Wrong answer" << endl;
 		return;
