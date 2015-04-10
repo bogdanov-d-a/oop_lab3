@@ -5,24 +5,24 @@
 class CContactCollection
 {
 public:
+	typedef std::list<CContact> List;
+	typedef std::vector<List::iterator> ListIterators;
+
 	void ReadRawData(std::istream &in);
 	void WriteRawData(std::ostream &out) const;
 
-	typedef std::list<CContact> ContactList;
-	typedef std::vector<ContactList::iterator> ContactListIterators;
+	ListIterators SearchByName(std::string const& name);
+	ListIterators SearchByPostAddress(CPostAddress const& address);
+	ListIterators SearchByPhoneNumber(std::string const& number);
+	ListIterators SearchByEmailAddress(std::string const& address);
 
-	ContactListIterators SearchByName(std::string const& name);
-	ContactListIterators SearchByPostAddress(CPostAddress const& address);
-	ContactListIterators SearchByPhoneNumber(std::string const& number);
-	ContactListIterators SearchByEmailAddress(std::string const& address);
-
-	void RemoveContact(ContactList::iterator elemIter);
-	void EditContact(ContactList::iterator elemIter, CContact const& newData);
+	void RemoveContact(List::iterator elemIter);
+	void EditContact(List::iterator elemIter, CContact const& newData);
 	void AddContact(CContact const& contact);
 
 	bool operator==(CContactCollection const& other) const;
 
 private:
-	ContactList m_contacts;
-	ContactListIterators SearchByCondition(std::function<bool(CContact const&)> statementFunction);
+	List m_contacts;
+	ListIterators SearchByCondition(std::function<bool(CContact const&)> statementFunction);
 };
