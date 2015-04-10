@@ -138,8 +138,11 @@ BOOST_AUTO_TEST_CASE(TestContactRawData)
 BOOST_AUTO_TEST_CASE(TestContactCollectionRawData)
 {
 	CContactCollection col1;
-	BOOST_CHECK(col1.AddContact(CContact(CName("1"), CPostAddress()))->MatchesByName("1"));
-	BOOST_CHECK(col1.AddContact(CContact(CName("2"), CPostAddress()))->MatchesByName("2"));
+	{
+		const size_t newItemInd = col1.AddContact(CContact(CName("1"), CPostAddress()));
+		BOOST_CHECK(col1.GetContactData(newItemInd)->MatchesByName("1"));
+	}
+	col1.AddContact(CContact(CName("2"), CPostAddress()));
 
 	ostringstream rawDataOut;
 	col1.WriteRawData(rawDataOut);

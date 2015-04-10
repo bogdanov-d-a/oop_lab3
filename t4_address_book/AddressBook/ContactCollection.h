@@ -6,28 +6,34 @@ class CContactCollection
 {
 public:
 	typedef std::list<CContact> List;
-	typedef std::vector<List::iterator> ListIterators;
+	struct SearchResult
+	{
+		List::const_iterator it;
+		size_t ind;
+	};
+	typedef std::vector<SearchResult> SearchResults;
 
 	CContactCollection();
 	void ReadRawData(std::istream &in);
 	void WriteRawData(std::ostream &out) const;
 	bool ChangedSinceLastRawDataReading() const;
 
-	ListIterators SearchByName(std::string const& name);
-	ListIterators SearchByPostAddress(CPostAddress const& address);
-	ListIterators SearchByPhoneNumber(std::string const& number);
-	ListIterators SearchByEmailAddress(std::string const& address);
+	SearchResults SearchByName(std::string const& name) const;
+	SearchResults SearchByPostAddress(CPostAddress const& address) const;
+	SearchResults SearchByPhoneNumber(std::string const& number) const;
+	SearchResults SearchByEmailAddress(std::string const& address) const;
 
-	void RemoveContact(List::iterator elemIter);
-	void EditContact(List::iterator elemIter, CContact const& newData);
-	List::iterator AddContact(CContact const& contact);
+	void RemoveContact(size_t elemInd);
+	void EditContact(size_t elemInd, CContact const& newData);
+	size_t AddContact(CContact const& contact);
 
 	bool operator==(CContactCollection const& other) const;
+	List::const_iterator GetContactData(size_t index) const;
 
 private:
 	List m_contacts;
 	bool m_changed;
 
-	ListIterators SearchByCondition(std::function<bool(CContact const&)> statementFunction);
-	bool CheckNewContact(CContact const& contact, List::iterator exclude);
+	SearchResults SearchByCondition(std::function<bool(CContact const&)> cond) const;
+	bool CheckNewContact(CContact const& contact, size_t exclude) const;
 };

@@ -36,8 +36,8 @@ bool CContactCollection::ChangedSinceLastRawDataReading() const
 	return m_changed;
 }
 
-CContactCollection::ListIterators
-CContactCollection::SearchByName(string const& name)
+CContactCollection::SearchResults
+CContactCollection::SearchByName(string const& name) const
 {
 	return SearchByCondition([&name](CContact const& contact)
 	{
@@ -45,8 +45,8 @@ CContactCollection::SearchByName(string const& name)
 	});
 }
 
-CContactCollection::ListIterators
-CContactCollection::SearchByPostAddress(CPostAddress const& address)
+CContactCollection::SearchResults
+CContactCollection::SearchByPostAddress(CPostAddress const& address) const
 {
 	return SearchByCondition([&address](CContact const& contact)
 	{
@@ -54,8 +54,8 @@ CContactCollection::SearchByPostAddress(CPostAddress const& address)
 	});
 }
 
-CContactCollection::ListIterators
-CContactCollection::SearchByPhoneNumber(string const& number)
+CContactCollection::SearchResults
+CContactCollection::SearchByPhoneNumber(string const& number) const
 {
 	return SearchByCondition([&number](CContact const& contact)
 	{
@@ -63,8 +63,8 @@ CContactCollection::SearchByPhoneNumber(string const& number)
 	});
 }
 
-CContactCollection::ListIterators
-CContactCollection::SearchByEmailAddress(string const& address)
+CContactCollection::SearchResults
+CContactCollection::SearchByEmailAddress(string const& address) const
 {
 	return SearchByCondition([&address](CContact const& contact)
 	{
@@ -72,34 +72,41 @@ CContactCollection::SearchByEmailAddress(string const& address)
 	});
 }
 
-void CContactCollection::RemoveContact(List::iterator elemIter)
+void CContactCollection::RemoveContact(size_t elemInd)
 {
-	m_contacts.erase(elemIter);
+	m_contacts.erase(GetContactData(elemInd));
 	m_changed = true;
 }
 
-void CContactCollection::EditContact(List::iterator elemIter, CContact const& newData)
+void CContactCollection::EditContact(size_t elemInd, CContact const& newData)
 {
-	if (!CheckNewContact(newData, elemIter))
+	if (elemInd >= m_contacts.size())
+	{
+		throw runtime_error("Index is out of bounds");
+	}
+
+	if (!CheckNewContact(newData, elemInd))
 	{
 		throw runtime_error("Duplicate email address found");
 	}
 
-	*elemIter = newData;
+	auto it = m_contacts.begin();
+	advance(it, elemInd);
+
+	*it = newData;
 	m_changed = true;
 }
 
-CContactCollection::List::iterator
-CContactCollection::AddContact(CContact const& contact)
+size_t CContactCollection::AddContact(CContact const& contact)
 {
-	if (!CheckNewContact(contact, m_contacts.end()))
+	if (!CheckNewContact(contact, m_contacts.size()))
 	{
 		throw runtime_error("Duplicate email address found");
 	}
 
 	m_contacts.push_back(contact);
 	m_changed = true;
-	return --m_contacts.end();
+	return (m_contacts.size() - 1);
 }
 
 bool CContactCollection::operator==(CContactCollection const& other) const
@@ -107,31 +114,48 @@ bool CContactCollection::operator==(CContactCollection const& other) const
 	return (m_contacts == other.m_contacts);
 }
 
-CContactCollection::ListIterators
-CContactCollection::SearchByCondition(function<bool(CContact const&)> statementFunction)
+CContactCollection::List::const_iterator
+CContactCollection::GetContactData(size_t index) const
 {
-	vector<List::iterator> result;
-
-	for (auto contactIter = m_contacts.begin(); contactIter != m_contacts.end(); ++contactIter)
+	if (index >= m_contacts.size())
 	{
-		if (statementFunction(*contactIter))
+		throw runtime_error("Index is out of bounds");
+	}
+
+	auto it = m_contacts.cbegin();
+	advance(it, index);
+	return it;
+}
+
+CContactCollection::SearchResults
+CContactCollection::SearchByCondition(function<bool(CContact const&)> cond) const
+{
+	SearchResults results;
+
+	SearchResult curResult;
+	for (curResult.ind = 0, curResult.it = m_contacts.cbegin();
+		curResult.it != m_contacts.cend(); ++curResult.ind, ++curResult.it)
+	{
+		assert(curResult.ind < m_contacts.size());
+
+		if (cond(*curResult.it))
 		{
-			result.push_back(contactIter);
+			results.push_back(curResult);
 		}
 	}
 
-	return result;
+	return results;
 }
 
-bool CContactCollection::CheckNewContact(CContact const& contact, List::iterator exclude)
+bool CContactCollection::CheckNewContact(CContact const& contact, size_t exclude) const
 {
 	const set<string>& contactEmails = contact.GetEmailAddresses();
 
 	for (auto contactEmail : contactEmails)
 	{
-		const ListIterators found = SearchByEmailAddress(contactEmail);
-		const bool nothingFound = found.empty();
-		const bool onlyExcludedFound = (found.size() == 1 && found.front() == exclude);
+		const SearchResults foundData = SearchByEmailAddress(contactEmail);
+		const bool nothingFound = foundData.empty();
+		const bool onlyExcludedFound = (foundData.size() == 1 && foundData.back().ind == exclude);
 		const bool emailIsNotDuplicate = (nothingFound || onlyExcludedFound);
 
 		if (!emailIsNotDuplicate)

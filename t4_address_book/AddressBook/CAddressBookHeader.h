@@ -8,3 +8,4 @@
 #include <list>
 #include <vector>
 #include <fstream>
+#include <cassert>
