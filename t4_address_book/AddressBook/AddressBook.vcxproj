@@ -77,6 +77,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CAddressBook.h" />
     <ClInclude Include="CAddressBookHeader.h" />
     <ClInclude Include="Contact.h" />
     <ClInclude Include="ContactCollection.h" />
@@ -89,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AddressBook.cpp" />
+    <ClCompile Include="CAddressBook.cpp" />
     <ClCompile Include="Contact.cpp" />
     <ClCompile Include="ContactCollection.cpp" />
     <ClCompile Include="Name.cpp" />
