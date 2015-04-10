@@ -11,7 +11,7 @@ CName::CName(string const& str)
 {
 	if (m_fields.empty())
 	{
-		throw invalid_argument("Name can't be empty");
+		throw runtime_error("Name can't be empty");
 	}
 }
 
