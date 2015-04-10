@@ -20,7 +20,7 @@ public:
 
 	void RemoveContact(List::iterator elemIter);
 	void EditContact(List::iterator elemIter, CContact const& newData);
-	void AddContact(CContact const& contact);
+	List::iterator AddContact(CContact const& contact);
 
 	bool operator==(CContactCollection const& other) const;
 

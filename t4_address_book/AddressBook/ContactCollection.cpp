@@ -84,10 +84,12 @@ void CContactCollection::EditContact(List::iterator elemIter, CContact const& ne
 	m_changed = true;
 }
 
-void CContactCollection::AddContact(CContact const& contact)
+CContactCollection::List::iterator
+CContactCollection::AddContact(CContact const& contact)
 {
 	m_contacts.push_back(contact);
 	m_changed = true;
+	return --m_contacts.end();
 }
 
 bool CContactCollection::operator==(CContactCollection const& other) const
