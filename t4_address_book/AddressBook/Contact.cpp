@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Contact.h"
 #include "StringUtils.h"
+#include "RawDataUtils.h"
 
 using namespace std;
 
@@ -8,6 +9,21 @@ CContact::CContact(CName const& name, CPostAddress const& address)
 	:m_name(name)
 	,m_postAddress(address)
 {}
+
+CContact::CContact(istream &in)
+	:m_name(in)
+	,m_postAddress(in)
+	,m_phoneNumbers(RawData::ReadStringSet(in))
+	,m_emailAddresses(RawData::ReadStringSet(in))
+{}
+
+void CContact::WriteRawData(ostream &out) const
+{
+	m_name.WriteRawData(out);
+	m_postAddress.WriteRawData(out);
+	RawData::WriteStringSet(m_phoneNumbers, out);
+	RawData::WriteStringSet(m_emailAddresses, out);
+}
 
 void CContact::AddPhoneNumber(string const& number)
 {
@@ -37,4 +53,12 @@ bool CContact::MatchesByPhoneNumber(string const& number) const
 bool CContact::MatchesByEmailAddress(string const& address) const
 {
 	return (m_emailAddresses.find(ToLower(address)) != m_emailAddresses.cend());
+}
+
+bool CContact::operator==(const CContact &other) const
+{
+	return (m_name == other.m_name &&
+		m_postAddress == other.m_postAddress &&
+		m_phoneNumbers == other.m_phoneNumbers &&
+		m_emailAddresses == other.m_emailAddresses);
 }

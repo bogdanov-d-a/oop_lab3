@@ -39,3 +39,27 @@ string RawData::ReadString(istream &in)
 	in.read(result.data(), strLen);
 	return string(result.data());
 }
+
+void RawData::WriteStringSet(set<string> const& s, ostream &out)
+{
+	out << s.size();
+	out.put(STOP_CHAR);
+
+	for (auto setElem : s)
+	{
+		WriteString(setElem, out);
+	}
+}
+
+set<string> RawData::ReadStringSet(istream &in)
+{
+	const size_t size = ReadSizeUntilStopChar(in);
+	set<string> result;
+
+	for (size_t i = 0; i < size; ++i)
+	{
+		result.insert(ReadString(in));
+	}
+
+	return result;
+}

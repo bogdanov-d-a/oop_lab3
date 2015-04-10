@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "../AddressBook/Name.h"
 #include "../AddressBook/PostAddress.h"
+#include "../AddressBook/Contact.h"
 
 using namespace std;
 
@@ -114,4 +115,21 @@ BOOST_AUTO_TEST_CASE(TestPostAddressRawData)
 	istringstream rawDataIn(rawDataOut.str());
 	CPostAddress addr2(rawDataIn);
 	BOOST_CHECK(addr1 == addr2);
+}
+
+BOOST_AUTO_TEST_CASE(TestContactRawData)
+{
+	CContact contact1(CName("Some name"), CPostAddress("city", "street", "building", "apartment"));
+	contact1.AddEmailAddress("some@email");
+	contact1.AddEmailAddress("another@email");
+	contact1.AddPhoneNumber("+12345678901");
+
+	ostringstream rawDataOut;
+	contact1.WriteRawData(rawDataOut);
+	BOOST_CHECK_EQUAL(rawDataOut.str(),
+		"9@Some name4@city6@street8@building9@apartment1@12@+123456789012@13@another@email10@some@email");
+
+	istringstream rawDataIn(rawDataOut.str());
+	CContact contact2(rawDataIn);
+	BOOST_CHECK(contact1 == contact2);
 }
