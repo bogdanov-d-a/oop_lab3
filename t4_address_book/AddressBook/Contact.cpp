@@ -63,6 +63,16 @@ bool CContact::operator==(const CContact &other) const
 		m_emailAddresses == other.m_emailAddresses);
 }
 
+string CContact::GetName() const
+{
+	return m_name.GetString();
+}
+
+void CContact::PrintPostAddress(std::ostream &out) const
+{
+	m_postAddress.Print(out);
+}
+
 const set<string>& CContact::GetPhoneNumbers() const
 {
 	return m_phoneNumbers;

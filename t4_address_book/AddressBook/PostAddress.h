@@ -12,6 +12,7 @@ public:
 	void WriteRawData(std::ostream &out) const;
 	bool Compare(CPostAddress const &other) const;
 	bool operator==(CPostAddress const &other) const;
+	void Print(std::ostream &out) const;
 
 private:
 	std::string m_city;
@@ -20,4 +21,6 @@ private:
 	std::string m_apartment;
 
 	static bool SameFields(std::string const& a, std::string const& b);
+	static void PrintIfNotEmpty(std::string const& announce,
+		std::string const& data, std::ostream &out);
 };

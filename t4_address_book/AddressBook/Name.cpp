@@ -43,3 +43,8 @@ bool CName::operator==(CName const& other) const
 {
 	return (m_str == other.m_str);
 }
+
+string CName::GetString() const
+{
+	return m_str;
+}

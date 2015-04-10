@@ -47,7 +47,24 @@ bool CPostAddress::operator==(CPostAddress const &other) const
 		m_apartment == other.m_apartment);
 }
 
+void CPostAddress::Print(ostream &out) const
+{
+	PrintIfNotEmpty("City: ", m_city, out);
+	PrintIfNotEmpty("Street: ", m_street, out);
+	PrintIfNotEmpty("Building: ", m_building, out);
+	PrintIfNotEmpty("Apartment: ", m_apartment, out);
+}
+
 bool CPostAddress::SameFields(string const& a, string const& b)
 {
 	return (a.empty() || b.empty() || CaseInsensitiveMatch(a, b));
+}
+
+void CPostAddress::PrintIfNotEmpty(std::string const& announce,
+	std::string const& data, std::ostream &out)
+{
+	if (!data.empty())
+	{
+		out << announce << data << endl;
+	}
 }

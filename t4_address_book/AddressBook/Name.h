@@ -8,6 +8,7 @@ public:
 	void WriteRawData(std::ostream &out) const;
 	bool CompareWithString(std::string const& str) const;
 	bool operator==(CName const& other) const;
+	std::string GetString() const;
 
 private:
 	std::string m_str;

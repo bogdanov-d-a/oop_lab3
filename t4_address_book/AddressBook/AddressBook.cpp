@@ -6,6 +6,95 @@
 
 using namespace std;
 
+string SetToString(set<string> const& s)
+{
+	string result;
+
+	bool printedFirst = false;
+	for (auto elem : s)
+	{
+		if (printedFirst)
+		{
+			result.push_back(' ');
+		}
+
+		result += elem;
+		printedFirst = true;
+	}
+
+	return result;
+}
+
+void HandleSearchRequest(CContactCollection const& collection)
+{
+	cout << "Choose search criteria:" << endl;
+	cout << "1. Name" << endl;
+	cout << "2. Post address" << endl;
+	cout << "3. Phone number" << endl;
+	cout << "4. Email address" << endl;
+
+	string line;
+	if (!getline(cin, line))
+	{
+		return;
+	}
+
+	int answer;
+	try
+	{
+		answer = stoi(line);
+	}
+	catch (invalid_argument const& e)
+	{
+		(void)e;
+		cout << "Wrong answer format" << endl;
+		return;
+	}
+
+	CContactCollection::SearchResults searchResults;
+
+	switch (answer)
+	{
+	case 1:
+	{
+		cout << "Enter name: ";
+		string name;
+		if (!getline(cin, name))
+		{
+			return;
+		}
+		searchResults = collection.SearchByName(name);
+		break;
+	}
+
+	// finish this
+
+	default:
+		return;
+	}
+
+	for (auto searchResult : searchResults)
+	{
+		auto const& data = *searchResult.it;
+
+		cout << "ID: " << searchResult.ind << endl;
+		cout << "Name: " << data.GetName() << endl;
+		data.PrintPostAddress(cout);
+
+		set<string> const& phones = data.GetPhoneNumbers();
+		if (!phones.empty())
+		{
+			cout << "Phone numbers: " << SetToString(phones) << endl;
+		}
+
+		set<string> const& emails = data.GetEmailAddresses();
+		if (!emails.empty())
+		{
+			cout << "Email adresses: " << SetToString(emails) << endl;
+		}
+	}
+}
+
 int _tmain(int argc, _TCHAR* argv[])
 {
 	const char DB_FILENAME[] = "database.txt";
@@ -47,15 +136,23 @@ int _tmain(int argc, _TCHAR* argv[])
 
 				switch (answer)
 				{
+				case 1:
+					HandleSearchRequest(collection);
+					break;
+
+				// finish this
+
 				case 5:
 					stopLoop = true;
 					break;
+
 				default:
 					cout << "Number is out of range" << endl;
 				}
 			}
 			catch (invalid_argument const& e)
 			{
+				(void)e;
 				cout << "Wrong answer format" << endl;
 			}
 		}
