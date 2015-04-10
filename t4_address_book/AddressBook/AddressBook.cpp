@@ -176,31 +176,32 @@ int _tmain(int argc, _TCHAR* argv[])
 		cout << "5. Quit" << endl;
 
 		const int answer = ReadInt(0);
-		switch (answer)
+
+		try
 		{
-		case 1:
-			HandleSearchRequest(collection);
-			break;
-
-		case 2:
-			try
+			switch (answer)
 			{
+			case 1:
+				HandleSearchRequest(collection);
+				break;
+
+			case 2:
 				collection.AddContact(PromptContact());
+				break;
+
+			// finish this
+
+			case 5:
+				stopLoop = true;
+				break;
+
+			default:
+				cout << "Wrong answer" << endl;
 			}
-			catch (runtime_error const& e)
-			{
-				cout << e.what() << endl;
-			}
-			break;
-
-		// finish this
-
-		case 5:
-			stopLoop = true;
-			break;
-
-		default:
-			cout << "Wrong answer" << endl;
+		}
+		catch (runtime_error const& e)
+		{
+			cout << e.what() << endl;
 		}
 	}
 	while (!stopLoop);
